@@ -64,7 +64,7 @@ LinkNode <T> *List<T>::Search(T x )
 
 
 template<typename T>
-LinkNode<T> *Local(int i) const
+LinkNode<T> *List::Local(int i) const
 {
 	LinkNode *current = first;
 	int count{0};
@@ -76,6 +76,67 @@ LinkNode<T> *Local(int i) const
 	return current;
 }
 
+
+template<typename T>
+bool List<T>::getData(int i,T& x) const
+{
+	if(i<=0)
+	{
+		return false;
+	}
+	LinkNode *current = Local(i);
+	if(current == nullptr)
+	{
+		return false;
+	}
+	else
+	{
+		x = current->data;
+		return false;
+	}
+}
+
+template<typename T>
+void List<T>::setData(int i,T& x)
+{
+	if(i<0)
+	{
+		return;
+	}
+	LinkNode<T> *current = Local(i);
+	if(curent == nullptr)
+	{
+		return;
+	}
+	else
+	{
+		current->data = x;
+	}
+}
+
+
+template<typename T>
+bool List<T>::Insert(int i,T& x)
+{
+	if(i<0)
+	{
+		std::cerr<<"请输入正确的插入位置！"<<std::endl;
+		return false;
+	}
+	LinkNode *current = Local(i);
+	if(current == nullptr)
+	{
+		return false;
+	}
+
+	LinkNode *newNode =  new LinkNode<T>(x);
+	if(newNode == nullptr)
+	{
+		std::cerr<<"分配错误"<<std::endl;
+	}
+	newNode->link = current->link;
+	current->link = newNode;
+}
 
 
 
