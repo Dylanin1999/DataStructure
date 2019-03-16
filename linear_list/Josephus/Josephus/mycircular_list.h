@@ -15,6 +15,7 @@ public:
 	bool getData(int i, T& x) const;
 	bool setData(int i, T& x);
 	bool Insert(int i, T& x);
+	bool Remove(int i, T& x);
 	void input(T endTag);
 	void output();
 	~mycircular_list();
@@ -63,6 +64,7 @@ int mycircular_list<T>::Length() const
 	{
 		counter += 1;
 		srcptr = srcptr->link;
+		std::cout << "data: " << srcptr->data << std::endl;
 	}
 	return counter-1;
 };
@@ -167,6 +169,31 @@ bool mycircular_list<T>::Insert(int i, T& x)
 	}
 	return true;
 };
+
+template<typename T>
+bool mycircular_list<T>::Remove(int i, T& x)
+{
+	if (i < 0)
+	{
+		std::cerr << "请输入正确的要删除的序号！" << std::endl;
+		return false;
+	}
+	else
+	{
+		LinkNode<T> *current = Locate(i-1);
+		if (current == nullptr)
+		{
+			std::cerr << "定位错误" << std::endl;
+			exit(1);
+		}
+		LinkNode<T> *del = current->link;
+		std::cout << "remove: " << del->data << std::endl;
+		x = del->data;
+		current->link = del->link;
+		delete del;
+	}
+	return true;
+}
 
 template<typename T>
 void mycircular_list<T>::input(T endTag)
