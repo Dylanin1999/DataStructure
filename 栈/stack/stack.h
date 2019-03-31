@@ -5,7 +5,7 @@ const int maxSize = 50;
 
 
 template <typename T>
-class Stack()
+class Stack
 {
 public:
 	Stack() {};
@@ -16,3 +16,5 @@ public:
 	virtual bool IsFull() const = 0;
 	virtual int getSize() const = 0;
 };
+
+

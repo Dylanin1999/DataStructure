@@ -29,7 +29,7 @@ template <typename T>
 SeqStack<T>::SeqStack(int sz) :top(-1), maxSize(sz)
 {
 	elements = new T[maxSize];
-	assert(elements != nullptr);9
+	assert(elements != nullptr);
 }
 
 
