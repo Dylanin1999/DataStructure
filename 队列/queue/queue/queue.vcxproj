@@ -146,6 +146,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="LinkedQueue.h" />
+    <ClInclude Include="LinkNode.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SeqQueue.h" />
   </ItemGroup>
