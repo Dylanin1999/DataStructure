@@ -37,9 +37,9 @@ public:
 protected:
 	BinTreeNode<T> *root;
 	T RefValue;
-	void CreateBinTree(istream& in, BinTreeNode<T>*&subTree);
+	void CreateBinTree(istream& in, BinTreeNode<T>* &subTree);
 	bool Insert(BinTreeNode<T>* &subTree, const T& x);
-	void destroy(BinTreeNode<T> *subTree);
+	void destroy(BinTreeNode<T>* &subTree);
 	bool Find(BinTreeNode<T> *subTree, const T& x) const;
 	BinTreeNode<T> *Copy(BinTreeNode<T> *orignode);
 	int Height(BinTreeNode<T> *subTree);
@@ -130,5 +130,115 @@ void BinaryTree<T>::preOrder(BinTreeNode<T> &subTree, void(*visit)(BinTreeNode<T
 		preOrder(subTree->rightChild, visit);
 	}
 }
+
+
+//中序遍历
+template <typename T>
+void BinaryTree<T>::inOrder(void(*visit)(BinTreeNode<T> *p))
+{
+	inOrder(root, visit);
+}
+
+
+template <typename T>
+void BinaryTree<T>::inOrder(BinTreeNode<T> &subTree, void(*visit)(BinTreeNode<T> *p))
+{
+	if (subTree != nullptr)
+	{
+		inOrder(subTree->leftChild, visit);
+		visit(subTree);
+		inOrder(subTree->rightChild, visit);
+	}
+}
+
+
+//后序遍历
+template <typename T>
+void BinaryTree<T>::postOrder(void(*visit)(BinTreeNode<T> *p))
+{
+	postOrder(root, visit);
+}
+
+
+template <typename T>
+void BinaryTree<T>::postOrder(BinTreeNode<T> &subTree, void(*visit)(BinTreeNode<T> *p))
+{
+	if (subTree != nullptr)
+	{
+		postOrder(subTree->leftChild, visit);
+		postOrder(subTree->rightChild, visit);
+		visit(subTree);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::destroy(BinTreeNode<T>* &subTree)
+{
+	while (subTree!=nullptr)
+	{
+		destroy(subTree->leftChild);
+		destroy(subTree->rightChild);
+		destroy(subTree);
+	}
+}
+
+template <typename T>
+void BinaryTree<T>::CreateBinTree(istream& in, BinTreeNode<T>* &subTree)
+{
+
+}
+
+
+template <typename T>
+BinTreeNode<T> *BinaryTree<T>::Parent(BinTreeNode<T> *subTree, BinTreeNode<T> *current)
+{
+	if (subTree == nullptr)
+	{
+		return nullptr;
+	}
+	if (subTree->leftChild == current || subTree->rightChild == current)
+	{
+		return subTree;
+	}
+	BinTreeNode<T> *p;
+	if ((p = Parent(subTree->leftChild,current)) != nullptr)
+	{
+		return p;
+	}
+	else
+	{
+		return Parent(subTree->rightChild, current);
+	}
+}
+
+
+template <typename T>
+void BinaryTree<T>::Traverse(BinTreeNode<T> *subTree, ostream& out)
+{
+	if (subTree != nullptr)
+	{
+		out << subTree->data << " ";
+		Traverse(subTree->leftChild, out);
+		Traverse(subTree->rightChild, out);
+	}
+}
+
+template <typename T>
+istream& operator >> (istream& in, BinaryTree<T>& Tree)
+{
+	BinaryTree<T>::CreateBinTree(in, Tree.root);
+	return in;
+}
+
+
+template <typename T>
+ostream& operator<<(ostream& out, BinaryTree<T>& Tree)
+{
+	out << "二叉树的前序遍历" << endl;
+	Tree.Traverse(Tree.root, out);
+	out << endl;
+	return out;
+}
+
 
 #endif
