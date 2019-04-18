@@ -18,7 +18,7 @@ class BinaryTree
 public:
 	BinaryTree() :root(nullptr) {}
 	BinaryTree(T value) :RefValue(value), root(nullptr) {}
-	BinaryTree(BinaryTree<T>& s);
+	BinaryTree(const BinaryTree<T>& s);
 	~BinaryTree();
 	bool IsEmpty();
 	BinTreeNode<T> *Parent(BinTreeNode<T> *current);
@@ -38,6 +38,7 @@ protected:
 	BinTreeNode<T> *root;
 	T RefValue;
 	void CreateBinTree(istream& in, BinTreeNode<T>* &subTree);
+	BinTreeNode<T> *CreateBinTree(T *VLR, T *LVR, int n);
 	bool Insert(BinTreeNode<T>* &subTree, const T& x);
 	void destroy(BinTreeNode<T>* &subTree);
 	bool Find(BinTreeNode<T> *subTree, const T& x) const;
@@ -52,9 +53,6 @@ protected:
 	void postOrder(BinTreeNode<T> &subTree, void(*visit)(BinTreeNode<T> *p));
 	friend istream& operator >> (istream& in, BinaryTree<T>& Tree);
 	friend ostream& operator << (ostream& out, BinaryTree<T>& Tree);
-
-
-
 private:
 
 };
@@ -190,6 +188,23 @@ void BinaryTree<T>::CreateBinTree(istream& in, BinTreeNode<T>* &subTree)
 
 
 template <typename T>
+BinTreeNode<T>* BinaryTree<T>::CreateBinTree(T *VLR, T *LVR, int n)
+{
+	if (n == 0)
+	{
+		return nullptr;
+	}
+	int k{ 0 };
+	while (VLR[0] != LVR[k])
+	{
+		k++;
+	}
+	BinaryTree<T> *t = new BinTreeNode<T>(VLR[0]);
+	t->leftChild = CreateBinTree(VLR + 1, LVR, k);
+	t->rightChild = CreateBinTree(VLR + K + 1, LVR + k + 1, n - k - 1);
+}
+
+template <typename T>
 BinTreeNode<T> *BinaryTree<T>::Parent(BinTreeNode<T> *subTree, BinTreeNode<T> *current)
 {
 	if (subTree == nullptr)
@@ -239,6 +254,65 @@ ostream& operator<<(ostream& out, BinaryTree<T>& Tree)
 	out << endl;
 	return out;
 }
+
+template <typename T>
+int operator==(BinaryTree<T>& s, BinaryTree<T>& t)
+{
+
+}
+
+
+template <typename T>
+BinaryTree<T>::BinaryTree(BinaryTree<T>& s)
+{
+	root = Copy(s.root);
+}
+
+
+template <typename T>
+BinaryTree<T>* BinaryTree<T>::Copy(BinTreeNode<T> *orignode)
+{
+	if (orignode = nullptr)
+	{
+		return nullptr;
+	}
+	BinTreeNode<T>* temp = new BinTreeNode<T>;
+	temp->data = orignode->data;
+	temp->leftChild = Copy(orignode->leftChild);
+	temp->rightChild = Copy(orignode->rightChild);
+	return temp;
+}
+
+template <typename T>
+int BinaryTree<T>::Size(BinTreeNode<T> *subTree) const
+{
+	if (subTree == nullptr)
+	{
+		return 0;
+	}
+	else
+	{
+		return 1 + Size(subTree->leftChild) + Size(subTree - rightChild);
+	}
+}
+
+template <typename T>
+int BinaryTree<T>::Height(BinTreeNode<T> *subTree) const
+{
+	if (subTree == nullptr)
+	{
+		return 0;
+	}
+	else
+	{
+		int i = Height(subTree->leftChild);
+		int j = Height(subTree->rightChild);
+		return (i < j) ? j + 1 : i + 1;
+	}
+}
+
+
+
 
 
 #endif
